@@ -374,7 +374,8 @@ function procDATETIME(datetime){
   datetime = new Date(datetime);
   return {
     date: days[datetime.getDay()-1] + " " + datetime.getDate() + " " + monthNames[datetime.getMonth()],
-    time: twentyFourToTwelve(datetime.getHours(), ("0"+datetime.getMinutes()).slice(-2))
+    time: twentyFourToTwelve(datetime.getHours(), ("0"+datetime.getMinutes()).slice(-2)),
+		htmlDate: datetime.getFullYear()+"-"+datetime.getMonth()+"-"+datetime.getDate()
   }
 }
 
@@ -428,7 +429,8 @@ function populateExams(inExams, fields, buttons = null){
 	var parser = new DOMParser();
 	for (let exam of inExams) {
 		// Get the exam time as human readable
-    var date = procDATETIME(exam.exam_datetime);
+		let exam_date = (exam.userexam_datetime?exam.userexam_datetime:exam.exam_datetime);
+    var date = procDATETIME(exam_date);
 
 		// Create a string for parsing into a DOM object
 		var string = "<div class='exam-cont'><div class='exam-block main-list'><h4>Level "+exam.exam_level+" "+exam.exam_name+"</h4><p>"+date.date+" "+date.time+"</p>"+(fields.includes("room")? "<p>"+(exam.userexam_room?"In Room: "+exam.userexam_room:"Room Unknown")+"</p>":"")+(buttons?"<i class='icon-dropdown right-button'></i>":"")+"</div>"+(buttons?"<div class='exam-buttons-cont' data-exam='"+exam.exam_id+"'><button><i class='"+buttons[0].class+"'></i></button><button><i class='"+buttons[1].class+"'></i></button></div>":"")+"</div>";

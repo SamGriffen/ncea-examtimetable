@@ -163,13 +163,13 @@ function insertExam($name, $datetime, $level){
 
 // Function to add a user to an exam
 function addExam($examId, $room = null){
-  return preparedStmt("INSERT INTO userexams (userexam_user, userexam_exam".($room?", userexam_room":"").") VALUES (?, ?".($room?", ?":"").")", "ii".($room?"s":""), ($room?[$_SESSION["user_id"], $examId, $room]:[$_SESSION["user_id"], $examId]));
+  return preparedStmt("INSERT INTO userexams (userexam_user, userexam_exam".($room?", userexam_room, userexam_datetime":"").") VALUES (?, ?".($room?", ?":"").")", "ii".($room?"s":""), ($room?[$_SESSION["user_id"], $examId, $room]:[$_SESSION["user_id"], $examId]));
 // print_a(["INSERT INTO userexams (userexam_user, userexam_exam".($room?", userexam_room":"").") VALUES (?, ?".($room?", ?":"").")", "ii".($room?"s":""), ($room?[$_SESSION["user_id"], $examId, $room]:[$_SESSION["user_id"], $examId])]);
 }
 
 // Function for getting user exams
 function getUserExams($userId){
-  return preparedStmt("SELECT exam_id, exam_name, exam_datetime, exam_level, userexam_room FROM exams, userexams WHERE userexam_user = ? AND userexam_exam = exam_id AND exam_id = userexam_exam ORDER BY exam_datetime ASC", "i", [$userId]);
+  return preparedStmt("SELECT exam_id, exam_name, exam_datetime, exam_level, userexam_room, userexam_datetime FROM exams, userexams WHERE userexam_user = ? AND userexam_exam = exam_id AND exam_id = userexam_exam ORDER BY exam_datetime ASC", "i", [$userId]);
 }
 
 // Function to get all exams from the database

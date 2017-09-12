@@ -173,18 +173,19 @@ function leaveExam(exam){
 function editExamConf(parameters){
   var exam = parameters.exam;
 
-  // Get the
+  let exam_date = (exam.userexam_datetime?exam.userexam_datetime:exam.exam_datetime);
+  var date = procDATETIME(exam_date);
 
   // Add the exam details to the modal
   var string = `
   <form id='exam-form'>
     <div class="input-group">
-      <input type='date' name='userexam_date' id="datepicker" value="${exam.exam_date}">
-      <label for="exam_room">Exam Date</label>
-    </div>
-    <div class="input-group">
       <input type='text' name='exam_room'>
       <label for="exam_room">Exam Room</label>
+    </div>
+    <div class="input-group">
+      <input type='date' name='userexam_date' id="datepicker" value="${date.htmlDate}" disabled>
+      <label for="exam_room">Exam Date</label>
     </div>
     <div>
       <input type='submit' value='Done'>
