@@ -21,6 +21,7 @@ function nzqaImport(){
 
   ajax.load("includes/processors/nzqaImport.php", null, function(data){
     $("#modal-data").innerHTML = "<section><h2>Success!</h2><p>All NCEA exams for the current year have been imported.</p><button id='done-button'>Done</button></section>";
+    loadExams(0, null, function(){adminPopulateHook()});
     $("#done-button").addEventListener("click", closeModal);
   });
 }

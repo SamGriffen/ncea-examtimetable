@@ -5,7 +5,7 @@ require("nzqa_script.php");
 // Check that the user is an admin user
 if(isset($_SESSION["user_status"]) && $_SESSION["user_status"] == "admin"){
   // Work through each year level
-  for($level = 1; $level <= 3; $level++){
+  for($level = 1; $level <= 4; $level++){
     // Get the exams from NZQA
     $exams = getExams($level);
 

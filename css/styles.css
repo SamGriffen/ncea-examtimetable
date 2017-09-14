@@ -371,7 +371,7 @@ main {
 /* Styles for the add exam page */
 #searchtop div {
   display: inline-block;
-  width: calc((1/3) * 100% - 4px);
+  width: calc((1/4) * 100% - 4px);
 }
 #searchtop div label {
   display: inline-block;

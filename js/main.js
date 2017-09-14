@@ -238,23 +238,27 @@ function populateModal(action, parameters = {}){
 		 		<header>
 					<h1>Add Exam</h1>
 					<form id='search-menu'>
-						<div id='searchtop'>
-							<div>
-								<input type='radio' name='level' value='1' id='levelButton1'>
-								<label for='levelButton1'>Level 1</label>
-							</div>
-							<div>
-								<input type='radio' name='level' value='2' id='levelButton2'>
-								<label for='levelButton2'>Level 2</label>
-							</div>
-							<div>
-								<input type='radio' name='level' value='3' id='levelButton3'>
-								<label for='levelButton3'>Level 3</label>
-							</div>
-						</div>
-						<div id='search-bar-cont'>
-							<input type='text' name='query' placeholder='Search Exams...' autocomplete='off'>
-						</div>
+					  <div id='searchtop'>
+					    <div>
+					      <input type='radio' name='level' value='1' id='levelButton1' checked>
+					      <label for='levelButton1'>Level 1</label>
+					    </div>
+					    <div>
+					      <input type='radio' name='level' value='2' id='levelButton2'>
+					      <label for='levelButton2'>Level 2</label>
+					    </div>
+					    <div>
+					      <input type='radio' name='level' value='3' id='levelButton3'>
+					      <label for='levelButton3'>Level 3</label>
+					    </div>
+					    <div>
+					      <input type='radio' name='level' value='4' id='levelButton4'>
+					      <label for='levelButton4'>Schol</label>
+					    </div>
+					  </div>
+					  <div id='search-bar-cont'>
+					    <input type='text' name='query' placeholder='Search Exams...' autocomplete='off'>
+					  </div>
 					</form>
 				</header>
 				<div id="modal-exam-list-wrap">
@@ -338,7 +342,6 @@ function loadExams(level, userExamsCallback = null, doneCallback = null){
 	var ajax = new AJAX();
 	ajax.load("includes/processors/"+((level?"fetchExams":"fetchUserExams"))+".php", null, function(data){
 		data = data.data;
-
 		// If this loop was fetching user exams, fetch everything else
 		if(!level){
 			exams[0] = data;
@@ -433,7 +436,10 @@ function populateExams(inExams, fields, buttons = null){
     var date = procDATETIME(exam_date);
 
 		// Create a string for parsing into a DOM object
-		var string = "<div class='exam-cont'><div class='exam-block main-list'><h4>Level "+exam.exam_level+" "+exam.exam_name+"</h4><p>"+date.date+" "+date.time+"</p>"+(fields.includes("room")? "<p>"+(exam.userexam_room?"In Room: "+exam.userexam_room:"Room Unknown")+"</p>":"")+(buttons?"<i class='icon-dropdown right-button'></i>":"")+"</div>"+(buttons?"<div class='exam-buttons-cont' data-exam='"+exam.exam_id+"'><button><i class='"+buttons[0].class+"'></i></button><button><i class='"+buttons[1].class+"'></i></button></div>":"")+"</div>";
+		console.log(exam);
+		var string = "<div class='exam-cont'><div class='exam-block main-list'><h4>"+getLevelString(exam.exam_level)+" ";
+
+		string += exam.exam_name+"</h4><p>"+date.date+" "+date.time+"</p>"+(fields.includes("room")? "<p>"+(exam.userexam_room?"In Room: "+exam.userexam_room:"Room Unknown")+"</p>":"")+(buttons?"<i class='icon-dropdown right-button'></i>":"")+"</div>"+(buttons?"<div class='exam-buttons-cont' data-exam='"+exam.exam_id+"'><button><i class='"+buttons[0].class+"'></i></button><button><i class='"+buttons[1].class+"'></i></button></div>":"")+"</div>";
 
 		// Parse the string
 		var domObj = parser.parseFromString(string, "text/html").body.firstChild;
@@ -472,9 +478,14 @@ function populateExams(inExams, fields, buttons = null){
 
 // Function to get an exam based on id. Given the array that it is in
 function getExamId(array, id, index = false){
-	for (var exam in array) {
-		if (array.hasOwnProperty(exam) && array[exam].exam_id == id) {
-			return (index?exam:array[exam]);
+	for (let exam of array) {
+		if (exam.exam_id == id) {
+			return (index?exam:exam);
 		}
 	}
+}
+
+// Function to get a level string for an exam
+function getLevelString(level){
+	return (level < 4?"Level "+level:"Scholarship")
 }

@@ -1,6 +1,9 @@
 <?php
 function getExams($level){
-  $url = sprintf("http://timetable.nzqa.govt.nz/mobile-timetable/timetable-%s.html", $level);
+  // Declare an array of levels so that levels can be mapped to ursl (I represent scholarship as level 4 in the database)
+  $levels = [1 => 1, 2 => 2, 3 => 3, 4 => "scholarship"];
+
+  $url = sprintf("http://timetable.nzqa.govt.nz/mobile-timetable/timetable-%s.html", $levels[$level]);
 
   $dom = new DOMDocument();
 
@@ -35,7 +38,9 @@ function getExams($level){
   		$tds = $tr->getElementsByTagName("td");
   		foreach ($tds as $td) {
   			// Check if the td has the rowspan attribute. This makes it a date. Process the data and get the date from it. $data ends up in format [day, month]
-  			if($td->getAttribute("rowspan")){
+        // echo $td->textContent;
+        // echo preg_match("/((Mon)|(Tues)|(Wed)|(Thurs)|(Fri)) \d{1,2} ((Nov)|(Dec))/", $td->textContent);
+  			if(preg_match("/((Mon)|(Tues)|(Wed)|(Thurs)|(Fri)) \d{1,2} ((Nov)|(Dec))/", $td->textContent)){
   				$data = [];
   				preg_match("/[0-9]{1,2}.*/" ,$td->textContent, $data);
   				$data = explode(" ", $data[0]);

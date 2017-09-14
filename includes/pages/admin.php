@@ -7,25 +7,9 @@ if($_SESSION["user_status"] != "admin"){
 <section>
   <header>
     <h1>Admin</h1>
-    <form id='search-menu'>
-      <div id='searchtop'>
-        <div>
-          <input type='radio' name='level' value='1' id='levelButton1' checked>
-          <label for='levelButton1'>Level 1</label>
-        </div>
-        <div>
-          <input type='radio' name='level' value='2' id='levelButton2'>
-          <label for='levelButton2'>Level 2</label>
-        </div>
-        <div>
-          <input type='radio' name='level' value='3' id='levelButton3'>
-          <label for='levelButton3'>Level 3</label>
-        </div>
-      </div>
-      <div id='search-bar-cont'>
-        <input type='text' name='query' placeholder='Search Exams...' autocomplete='off'>
-      </div>
-    </form>
+    <?php
+    require("includes/searchPanel.php");
+    ?>
   </header>
   <div id="exam-list">
   </div>
