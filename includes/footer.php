@@ -5,7 +5,8 @@
       <div id="modal-data"></div>
     </div>
   </div>
-  <script src="https://unpkg.com/flatpickr"></script>
-  <script src="js/main.js"></script>
+  <?php
+  require("includes/load_js.php");
+  ?>
 </body>
 </html>

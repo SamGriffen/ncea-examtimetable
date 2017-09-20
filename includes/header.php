@@ -8,7 +8,6 @@
   <meta name="description" content="<?php echo $pageData["page_description"]; ?>">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
   <link rel="stylesheet" href="fonts/icomoon/style.css"></head>
-  <link rel="stylesheet" href="https://unpkg.com/flatpickr/dist/flatpickr.min.css">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>

@@ -1,5 +1,5 @@
 // Once the document is ready, attach event listners and so on
-document.addEventListener("DOMContentLoaded", function(event){
+window.addEventListener("DOMContentLoaded", function(event){
   // Attach an onsubmit listener to the login form
   $("#login-form").addEventListener("submit", function(event){
     // Prevent the form from submitting
@@ -13,8 +13,7 @@ document.addEventListener("DOMContentLoaded", function(event){
       formData.append("action", ($("#login-form > #register").getAttribute("data-state") == "invisible" ? "login" : "register"));
 
       // Create an AJAX query
-      var ajax = new AJAX();
-      ajax.load("includes/processors/loginRegister.php", formData, function(data){
+      AJAX("includes/processors/loginRegister.php", formData, function(data){
         handleFormAJAX(event.target, data, function(event){
           window.location.href = "?page=home";
         });

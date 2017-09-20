@@ -10,6 +10,33 @@ body {
     display: none;
 }
 
+.page-icon {
+  padding-top: 10vh;
+  text-align: center;
+  width: 100%;
+}
+
+.page-icon i {
+  font-size: 10em;
+  color: #333333;
+}
+
+a {
+  color: #E24E42;
+}
+
+a:visited {
+  color: #B94037;
+}
+
+input[type="date"], input[type="time"] {
+  border: none;
+  width: 100%;
+  margin-top: 1em;
+  padding: 0.25em;
+  font-size: 1em;
+}
+
 input[type="text"], input[type="password"], input[type="email"] {
   font-size: 1.2em;
   padding: 0.5em 0.5em 0.5em 0.2em;
@@ -22,7 +49,18 @@ input[type="text"], input[type="password"], input[type="email"] {
 
 input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus {
   outline: none;
-  border-color: #6AB569;
+  border-color: #E24E42;
+}
+
+input[type="text"]:disabled, input[type="password"]:disabled, input[type="email"]:disabled, .flatpickr-input:disabled {
+  background-color: #fff;
+  color: #262626;
+  border: none;
+  border-color: rgba(0,0,0,0);
+}
+
+input[type="text"]:disabled:hover, input[type="password"]:disabled:hover, input[type="email"]:disabled:hover, .flatpickr-input:disabled:hover {
+  cursor: default;
 }
 
 .input-group {
@@ -44,12 +82,12 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
 .input-group > input:focus~label, .input-group > input:valid~label, .input-group > input:disabled~label, .input-group > input#datepicker~label{
   top: -1.2em;
   font-size: 1em;
-  color: #8BC34A ;
+  color: #E24E42 ;
 }
 
 /* INPUTS */
-.button, #upload-button, input[type="submit"], input[type="reset"], .action-button {
-  background-color: #8BC34A;
+.button, #upload-button, input[type="submit"], input[type="reset"] {
+  background-color: #E24E42;
   border: none;
   color: #fff;
   padding: 0.75em;
@@ -60,34 +98,89 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
   text-decoration: none;
   -webkit-appearance: none;
   box-shadow: 0 0.0025em 0.10em rgba(0,0,0,0.10), 0 0.0025em 0.10em rgba(0,0,0,0.20);
+  width: 6em;
 }
 
-.button:hover, #upload-button:hover, input[type="submit"]:hover, input[type="reset"]:hover, .action-button:hover {
-  background-color: #7CB342;
+.button:hover, #upload-button:hover, input[type="submit"]:hover, input[type="reset"]:hover {
+  background-color: #CE473C;
   color: #fff;
   cursor: pointer;
 }
 
-.button:focus, #upload-button:focus, input[type="submit"]:focus, input[type="reset"]:focus, .action-button:focus {
+.button:focus, #upload-button:focus, input[type="submit"]:focus, input[type="reset"]:focus {
   outline: none;
   color: #fff;
-  background-color: #689F38;
+  background-color: #B94037;
 }
 
 #modal-deny {
-  background-color: #f44336;
+  background-color: #E24E42;
 }
 
 #modal-deny:hover {
-  background-color: #ef5350;
+  background-color: #CE473C;
 }
 
 #modal-deny:focus {
-  background-color: #e57373;
+  background-color: ##B94037;
 }
 
 #login-form {
   text-align: center;
+}
+
+input[type="checkbox"], input[type="radio"] {
+  display: none;
+}
+
+label {
+  display: inline;
+}
+
+input[type="checkbox"] ~ label,  input[type="radio"] ~ label{
+  vertical-align: middle;
+  user-select: none;
+}
+
+*[data-state="hidden"] {
+  display: none;
+}
+
+input[type="checkbox"] ~ label:hover,  input[type="radio"] ~ label:hover {
+  cursor: pointer;
+}
+
+input[type="checkbox"] + label, input[type="radio"] + label.circ {
+  background-color: #E0E0E0;
+  border-radius: 0.2em;
+	padding: 9px;
+	display: inline-block;
+	position: relative;
+  margin: 0.25em;
+  -webkit-transition: 0.15s ease-in background-color;
+  -moz-transition: 0.15s ease-in background-color;
+  -o-transition: 0.15s ease-in background-color;
+  transition:  0.15s ease-in background-color;
+  color: #fff;
+}
+
+input[type="radio"] + label.circ {
+  border-radius: 50%;
+}
+
+input[type="checkbox"]:checked + label, input[type="radio"]:checked + label.circ {
+  background-color: #81C784;
+}
+
+input[type="checkbox"]:checked + label:after {
+  content: "✔";
+	font-size: 13px;
+	position: absolute;
+	top: 0px;
+	left: 4px;
+	color: #fff;
+  animation: fadeIn 0.15s linear;
+  outline: none;
 }
 
 #header-cont {
@@ -97,6 +190,7 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
   background-color: #fff;
   top: 0;
   color: #fff;
+  background-color: #E24E42;
   /*border-bottom: 0.25em solid #FF5722;*/
   z-index: 100;
   box-shadow: 0 0.05em 0.25em rgba(0,0,0,0.12), 0 0.05em 0.2em rgba(0,0,0,0.24);
@@ -130,8 +224,8 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
 #menu a{
   width: 100%;
 	display: block;
-  color: #262626;
-  font-weight: 500;
+  color: #fff;
+  font-weight: 700;
 	text-decoration: none;
 	padding: 1em 0;
   font-size: 1em;
@@ -140,6 +234,11 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
   box-sizing: border-box;
   overflow: hidden;
   transition: max-height 0.15s ease-in;
+  transition: background-color 0.15s ease-in;
+}
+
+#menu a:hover {
+  background-color: #B94037;
 }
 
 #menu ul {
@@ -188,7 +287,7 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
 #hamburger span {
 	height: 0.34em;
 	width: 1.8em;
-	background-color: #262626;
+	background-color: #fff;
 	display: block;
 	position: absolute;
 	border-radius: 8px;
@@ -232,11 +331,29 @@ main {
   margin-top: 4em;
 }
 
+main header h1{
+  margin-top: 2.9em;
+}
+
 .add-button {
-  font-size: 2.8em;
+  font-size: 3em;
   position: absolute;
-  top: 1.325em;
+  top: 1.32em;
   right: 0.2em;
+  color: #e24e42;
+  -webkit-transition: 0.15s ease-in-out color;
+	-moz-transition: 0.15s ease-in-out color;
+	-o-transition: 0.15s ease-in-out color;
+	transition: 0.15s ease-in-out color;
+}
+
+.add-button:hover {
+  color: #CE473C;
+  cursor: pointer;
+}
+
+.add-button:active {
+  color: #B94037;
 }
 
 /* MODAL DIALOGS */
@@ -379,7 +496,7 @@ main {
   text-align: center;
   padding: 0.5em 0;
   color: #fff;
-  background-color: #8BC34A;
+  background-color: #E24E42;
   -webkit-transition: 0.15s ease-in-out background-color;
 	-moz-transition: 0.15s ease-in-out background-color;
 	-o-transition: 0.15s ease-in-out background-color;
@@ -388,24 +505,8 @@ main {
 }
 
 #searchtop div label:hover, #searchtop div label:focus, #searchtop div input:checked ~ label {
-  background-color: #689F38;
+  background-color: #B94037;
 }
-
-/*#searchtop div:first-child > label {
-  background-color: #9CCC65;
-}
-
-#searchtop div:first-child > label:hover, #searchtop div:first-child > label:focus, #searchtop div:first-child > input:checked ~ label {
-  background-color: #7CB342;
-}
-
-#searchtop div:last-child > label {
-  background-color: #ef5350;
-}
-
-#searchtop div:last-child > label:hover, #searchtop div:last-child > label:focus,#searchtop div:last-child > input:checked ~ label {
-  background-color: #e53935;
-}*/
 
 #searchtop div input {
   visibility: hidden;
@@ -427,7 +528,7 @@ main {
 }
 
 #search-bar-cont input:focus {
-  border-bottom-color: #26C6DA;
+  border-bottom-color: #E24E42;
   outline: none;
 }
 
@@ -473,7 +574,7 @@ main {
   font-size: 1.2em;
   right: 0;
   top:0;
-  padding: 2.058em 0.75em;
+  padding: 2.03em 0.75em;
 }
 
 .right-button:before {
@@ -497,6 +598,7 @@ main {
 }
 
 .main-list {
+  height: 5em;
   padding: 0.5em 1em;
 }
 
@@ -551,18 +653,29 @@ main {
 	transform: rotate(180deg);
 }
 
-.error {
+.message {
   margin: 0.5em 0;
-  color: #f44336;
   animation: fadein 2s;
   -moz-animation: fadeIn 1s;
   -webkit-animation: fadeIn 1s;
   -o-animation: fadeIn 1s;
 }
 
-@media screen and (min-width: 62em){
+.error {
+  color: #f44336;
+}
+
+.okay {
+  color: #9CCC65;
+}
+
+#exam-time-select {
+  margin-top: 1em;
+}
+
+@media screen and (min-width: 68em){
   main {
-    max-width: 70em;
+    max-width: 66em;
     margin: 0 auto;
     margin-top: 5em;
     position: relative;
@@ -578,12 +691,15 @@ main {
 
   #menu {
     max-height: none;
-    width: auto;
+    width: 100%;
   }
 
-  #menu li {
+  #menu a {
+    width: 10em;
     display: inline-block;
-    padding: 0.28em 1em;
+    padding: 1em 1em;
+    float: right;
+    line-height: 1.2em;
   }
 
   .add-button {
@@ -682,6 +798,7 @@ main {
 
   #modal-exam-list {
     max-height: calc(100% - 11.62em);
+    top: 11.62em;
   }
 }
 

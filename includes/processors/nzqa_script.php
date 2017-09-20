@@ -1,5 +1,5 @@
 <?php
-function getExams($level){
+function parseExams($level){
   // Declare an array of levels so that levels can be mapped to ursl (I represent scholarship as level 4 in the database)
   $levels = [1 => 1, 2 => 2, 3 => 3, 4 => "scholarship"];
 

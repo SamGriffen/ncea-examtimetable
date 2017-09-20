@@ -19,7 +19,7 @@ if(!isset($_SESSION)){
 // Function to retrieve pages from the database. Get pages from the database. If the function is passed a pageName, get that pages information
 function getPages($pageName = null){
   global $dbc;
-  $data = preparedStmt("SELECT page_id, page_title, page_description, page_name FROM pages WHERE page_name = ?", ($pageName != null ? 's' : null), ($pageName != null ? [$pageName] : null));
+  $data = preparedStmt("SELECT page_id, page_title, page_description, page_name, page_js FROM pages WHERE page_name = ?", ($pageName != null ? 's' : null), ($pageName != null ? [$pageName] : null));
   // Formulate query to send to the database to prepare
   return $data;
 }
@@ -41,9 +41,19 @@ function validatePOST(){
       $errors["check_password"] = "Passwords don't match!";
     }
   }
+  if(isset($_POST["exam_room"]) && strlen($_POST["exam_room"]) > 20){
+    $errors["exam_room"] = "Please no more than 20 characters";
+  }
 
-  if(isset($_POST["exam_room"]) && ($_POST["exam_room"] == "" || strlen($_POST["exam_room"]) > 20)){
-    $errors["exam_room"] = "Please enter a room, less than 20 characters";
+  // Validate a date
+  if(isset($_POST["exam_date"])){
+    // Form a new date object
+    try{
+      $date = new DateTime($_POST["exam_date"]);
+    }
+    catch (Exception $e) {
+      $errors["date-input"] = "Please don't try to mess with me. (If this isn't what you were doing, please contact an admin)";
+    }
   }
 
   $data = array(
@@ -152,7 +162,7 @@ function insertExam($name, $datetime, $level){
     $inDate = new DateTime($datetime);
     if($dbDate != $inDate){
       // Update the exam in the database
-      preparedStmt("UPDATE exams SET exam_datetime = ?", "s", [$datetime]);
+      preparedStmt("UPDATE exams SET exam_datetime = ? WHERE exam_id = ?", "si", [$datetime, $exam["exam_id"]]);
     }
   }
   // Else insert a new exam
@@ -163,13 +173,24 @@ function insertExam($name, $datetime, $level){
 
 // Function to add a user to an exam
 function addExam($examId, $room = null){
-  return preparedStmt("INSERT INTO userexams (userexam_user, userexam_exam".($room?", userexam_room, userexam_datetime":"").") VALUES (?, ?".($room?", ?":"").")", "ii".($room?"s":""), ($room?[$_SESSION["user_id"], $examId, $room]:[$_SESSION["user_id"], $examId]));
-// print_a(["INSERT INTO userexams (userexam_user, userexam_exam".($room?", userexam_room":"").") VALUES (?, ?".($room?", ?":"").")", "ii".($room?"s":""), ($room?[$_SESSION["user_id"], $examId, $room]:[$_SESSION["user_id"], $examId])]);
+  return preparedStmt("INSERT INTO userexams (userexam_user, userexam_exam".($room?", userexam_room":"").") VALUES (?, ?".($room?", ?":"").")", "ii".($room?"s":""), ($room?[$_SESSION["user_id"], $examId, $room]:[$_SESSION["user_id"], $examId]));
 }
 
 // Function for getting user exams
 function getUserExams($userId){
   return preparedStmt("SELECT exam_id, exam_name, exam_datetime, exam_level, userexam_room, userexam_datetime FROM exams, userexams WHERE userexam_user = ? AND userexam_exam = exam_id AND exam_id = userexam_exam ORDER BY exam_datetime ASC", "i", [$userId]);
+}
+
+// Function to check if a user is already in an exam
+function inExam($examId){
+  // Get all of the users exams
+  $exams = getUserExams($_SESSION["user_id"]);
+  foreach ($exams as $exam) {
+    if($exam["exam_id"] == $examId){
+      return true;
+    }
+  }
+  return false;
 }
 
 // Function to get all exams from the database
@@ -186,8 +207,6 @@ function examInArray($inExam, $userExams){
   }
   return false;
 }
-
-
 
 // TEST FUNCTION FOR PRINTING AN Array
 function print_a($ar){

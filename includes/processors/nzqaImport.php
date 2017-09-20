@@ -7,7 +7,7 @@ if(isset($_SESSION["user_status"]) && $_SESSION["user_status"] == "admin"){
   // Work through each year level
   for($level = 1; $level <= 4; $level++){
     // Get the exams from NZQA
-    $exams = getExams($level);
+    $exams = parseExams($level);
 
     // Loop through each exam, and dump it into the database
     foreach ($exams as $exam) {

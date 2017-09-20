@@ -15,4 +15,3 @@ if($_SESSION["user_status"] != "admin"){
   </div>
   <i class="icon-circ-download add-button"></i>
 </section>
-<script src="js/pages/admin.js"></script>

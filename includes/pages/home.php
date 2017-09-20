@@ -6,4 +6,3 @@
   <div id="exam-list">
   </div>
 </section>
-<script src="js/pages/home.js"></script>

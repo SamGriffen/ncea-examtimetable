@@ -17,4 +17,3 @@
     <a href="#" id="register-link">Register</a>
   </form>
 </section>
-<script src="js/pages/login.js"></script>
