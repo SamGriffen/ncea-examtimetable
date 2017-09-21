@@ -128,7 +128,11 @@ function adminEditExamConf(parameters){
     event.preventDefault();
 
     // If the form is valid
+<<<<<<< HEAD
     if(validateForm(["exam_name", "exam_date", "exam_time"], event.target)){
+=======
+    if(validateForm( ["exam_name", "exam_date", "exam_time"], event.target)){
+>>>>>>> 1bd62413c55e3c6ca4a8affc0be0856267c43f83
       let tar = event.target;
       var name = tar["exam_name"].value;
 
