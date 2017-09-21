@@ -12,7 +12,7 @@
     <div id="register" class="input-group" data-state="invisible">
     </div>
     <div>
-      <input type="submit" value="Login">
+      <input type="submit" value="Login" name="submit">
     </div>
     <a href="#" id="register-link">Register</a>
   </form>

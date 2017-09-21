@@ -17,20 +17,20 @@ if(isset($_POST["action"])){
 function login(){
   // Check that there is a username and password set in the POST array
   if(isset($_POST["username"]) && isset($_POST["password"])){
-    // If they are set, validate them
-    $data = validatePOST();
+    $data = [];
 
     // Check if the user exists. 0 index to select the first item
     $user = getUser($_POST["username"]);
 
     // Check that the user bot exists, and the password is correct. Otherwise reject the login.
-    if($data["status"] == "success" && (!$user || !password_verify($_POST["password"], $user["user_password"]))){
+    if(!$user || !password_verify($_POST["password"], $user["user_password"])){
       $data["status"] = "failed";
       $data["errors"]["password"] = "Incorrect username or password";
     }
     else {
       array_pop($user);
       $_SESSION = $user;
+      $data["status"] = "success";
     }
     echo json_encode($data);
   }

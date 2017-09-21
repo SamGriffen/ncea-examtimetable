@@ -4,7 +4,9 @@ window.addEventListener("DOMContentLoaded", function(event){
   $("#login-form").addEventListener("submit", function(event){
     // Prevent the form from submitting
     event.preventDefault();
-    var valid = validateForm($("#login-form"));
+
+    // Only validate if the user is registering
+    var valid = (event.target["submit"].value == "Register" ? validateForm($("#login-form")) : true);
     if(valid){
       // Make a formdata element of all the data in the form
       var formData = new FormData(event.target);
