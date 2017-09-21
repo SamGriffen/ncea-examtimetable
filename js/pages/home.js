@@ -131,7 +131,7 @@ function homePopulateHook(){
         var id = getNearestElClass(event.target, "exam-buttons-cont").getAttribute("data-exam");
         var exam = getExamId(exams[0], id);
         // Populate the modal with the confirm dialog
-        populateModal("confirm", {exam:exam, heading:"Leave "+getLevelString(exam.exam_level)+" "+exam.exam_name+"?", message:"You can always add this exam again later", yes:"Leave", no:"Stay", okfunc:function(params){
+        populateModal("confirm", {exam:exam, heading:"Leave "+getLevelString(exam.exam_level)+" "+exam.exam_name+"?", message:"You can always add this exam again later", yes:"Leave", no:"Cancel", okfunc:function(params){
           leaveExam(params.exam);
         }});
         openModal();
