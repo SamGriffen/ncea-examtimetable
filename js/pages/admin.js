@@ -128,7 +128,7 @@ function adminEditExamConf(parameters){
     event.preventDefault();
 
     // If the form is valid
-    if(validateForm(event.target)){
+    if(validateForm( ["exam_name", "exam_date", "exam_time"], event.target)){
       let tar = event.target;
       var name = tar["exam_name"].value;
 
@@ -184,5 +184,5 @@ function deleteExam(parameters){
 
 // Function for an admin to edit an exam
 function adminEditExam(){
-
+  // Validate the data in the modal
 }
