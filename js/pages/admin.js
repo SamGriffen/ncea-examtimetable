@@ -3,7 +3,7 @@ window.addEventListener("load", function(){
   loadExams(0, null, function(){adminPopulateHook()});
   $(".add-button").onclick = function(event){
     // Populate the modal asking an admin if they want to import exams from NZQA
-    populateModal("confirm", {heading:"Import NZQA Exams", message:"Import this years NCEA exams? This will update all exams in the database. If you have corrected any NZQA data, this will override your correction. Any exams that have not changed since the last import will remain untouched, and will not be duplicated.", yes:"Import",no:"Cancel", okfunc:function(data){
+    populateModal("confirm", {heading:"Import NZQA Exams", message:"Import this years NCEA exams? Any existing exams will remain, unless there is a duplicate being added, in which case the details will be set to the incoming details from NZQA.", yes:"Import",no:"Cancel", okfunc:function(data){
       // Change the modal data to show that the exams are being imported
       $("#modal-data").innerHTML = "<section><h2>Importing Exams...</h2><i class='icon-reload' id='load-spinner'></i><p>Please Wait. This can take a while.</p></section>";
       nzqaImport();
