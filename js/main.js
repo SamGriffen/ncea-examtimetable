@@ -284,7 +284,7 @@ function populateModal(action, parameters = {}){
   // dictionary that contains all information about data to put inside a modal, based on the action input. Also a function to call on setup of the dialog
   var modals = {
 		confirm : {
-			data: "<section></section><div class='button-cont confirm-cont'><button class='button' id='modal-confirm'>Do It!</button><button class='button' id='modal-deny'>Cancel</button></div>",
+			data: "<section></section><div class='button-cont confirm-cont'><button class='button' id='modal-deny'>Cancel</button><button class='button' id='modal-confirm'>Do It!</button></div>",
 			function: confirmConfigure,
 		},
 		addExam : {
