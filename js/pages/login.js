@@ -6,7 +6,7 @@ window.addEventListener("DOMContentLoaded", function(event){
     event.preventDefault();
 
     // Only validate if the user is registering
-    var valid = (event.target["submit"].value == "Register" ? validateForm($("#login-form")) : true);
+    var valid = (event.target["submit"].value == "Register" ? validateForm(["username", "password", "check_password"],$("#login-form")) : true);
     if(valid){
       // Make a formdata element of all the data in the form
       var formData = new FormData(event.target);
@@ -45,9 +45,9 @@ window.addEventListener("DOMContentLoaded", function(event){
     }
   })
 
-  $("#login-form").addEventListener("input", function(event){
+  $("#login-form").addEventListener("change", function(event){
     if($("#login-form > #register").getAttribute("data-state") == "visible"){
-      validateForm($("#login-form"));
+      validateForm(["username", "password", "check_password"],$("#login-form"));
     }
   })
 })

@@ -229,26 +229,41 @@ function getNearestElClass(element, className){
 }
 
 // General form validation function
-function validateForm(form){
+function validateForm(fields, form){
 	// Declare an errors dict
 	var errors = {};
 	// Validate a username field
-	if(form["username"] && (form["username"].value.length > 25 && form["username"].value != "")){
-		errors["username"] = "Please enter a username that is shorter than 25 characters";
+	if(fields.includes("username") && (!form["username"] || (form["username"].value.length > 25 || form["username"].value == ""))){
+		errors["username"] = (form["username"].value.length == "" ? "Please enter a username" : "Please enter a username that is shorter than 25 characters");
 	}
 
 	// Validate a password field
-	if(form["password"] && (form["password"].value.length < 6 && form["password"].value != "")){
+	if(fields.includes("password") && (!form["password"] || (form["password"].value.length < 6 && form["password"].value != ""))){
 		errors["password"] = "Please enter a password that is greater than 6 characters";
 	}
 
-	if(form["check_password"] && (form["check_password"].value != form["password"].value) && form["check_password"].value != ""){
+	if(fields.includes("check_password")  && (!form["check_password"] || (form["check_password"].value != form["password"].value) && form["check_password"].value != "")){
 		errors["check_password"] = "Passwords don't match";
 	}
 
-	if(form["exam_room"] && (form["exam_room"].length > 20)){
+	if(fields.includes("exam_room") && (!form["exam_room"] || (form["exam_room"].value.length > 20))){
 		errors["exam_room"] = "Please enter a room less than 20 characters";
 	}
+
+	// Validate exam date
+	if(fields.includes("exam_date")){
+			try {
+				new Date(form["exam_date"]);
+			} catch (e) {
+				errors["exam_date"] = e;
+			}
+	}
+
+	// Validate exam time
+	if(fields.includes("exam_time") && (!form["exam_time"] || (form["exam_time"].value.match(/^([0-9]{2}:?){1,3}$/)))){
+		errors["exam_time"] = "Please enter a legitimate time.";
+	}
+
 	// Print the errors out to the form
 	if(Object.keys(errors).length){
 		appendFormErrors(form, errors);
