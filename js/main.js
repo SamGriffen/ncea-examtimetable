@@ -233,7 +233,6 @@ function validateForm(fields, form){
 	// Declare an errors dict
 	var errors = {};
 	// Validate a username field
-<<<<<<< HEAD
 	if(fields.includes("username") && (!form["username"] || (form["username"].value.length > 25 || form["username"].value == ""))){
 		errors["username"] = (form["username"].value == "" ? "Please enter a username" : "Please enter a username that is shorter than 25 characters");
 	}
@@ -255,25 +254,6 @@ function validateForm(fields, form){
 		errors["exam_name"] = (form["exam_name"].value == "" ? "Please enter an exam name" : "Please enter a exam name that is shorter than 45 characters");;
 	}
 
-=======
-	if(fields.includes("username") && !form["username"] || (form["username"].value.length > 25 || form["username"].value == "")){
-		errors["username"] = "Please enter a username that is shorter than 25 characters";
-	}
-
-	// Validate a password field
-	if(fields.includes("password") && !form["password"] || (form["password"].value.length < 6 && form["password"].value != "")){
-		errors["password"] = "Please enter a password that is greater than 6 characters";
-	}
-
-	if(fields.includes("check_password")  && !form["check_password"] || (form["check_password"].value != form["password"].value) && form["check_password"].value != ""){
-		errors["check_password"] = "Passwords don't match";
-	}
-
-	if(fields.includes("exam_room")  && !form["exam_room"] || (form["exam_room"].length > 20)){
-		errors["exam_room"] = "Please enter a room less than 20 characters";
-	}
-
->>>>>>> 1bd62413c55e3c6ca4a8affc0be0856267c43f83
 	// Validate exam date
 	if(fields.includes("exam_date")){
 			try {
@@ -284,11 +264,7 @@ function validateForm(fields, form){
 	}
 
 	// Validate exam time
-<<<<<<< HEAD
 	if(fields.includes("exam_time") && (!form["exam_time"] || (form["exam_time"].value.match(/^([0-9]{2}:?){1,3} [AP]M$/)))){
-=======
-	if(fields.includes("exam_time") && !form["exam_time"] || (form["exam_time"].value.match(/^([0-9]{2}:?){1,3}$/))){
->>>>>>> 1bd62413c55e3c6ca4a8affc0be0856267c43f83
 		errors["exam_time"] = "Please enter a legitimate time.";
 	}
 
