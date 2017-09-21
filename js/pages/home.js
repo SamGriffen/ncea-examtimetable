@@ -86,7 +86,7 @@ function confExamAdd(parameters){
     if(room != ""){
       formData.append("exam_room", room);
     }
-    if(room == "" || validateForm(event.target)){
+    if(room == "" || validateForm(["exam_room"], event.target)){
       // Send an AJAX query to the server
       AJAX("includes/processors/addExam.php", formData, function(data){
         if(data.status == "success"){
@@ -254,7 +254,7 @@ function editExamConf(parameters){
     event.preventDefault();
 
     // If the form is valid
-    if(validateForm(event.target)){
+    if(validateForm(["exam_room", "exam_date", "exam_time"], event.target)){
       let tar = event.target;
       var room = tar["exam_room"].value;
 

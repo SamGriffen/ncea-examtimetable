@@ -234,7 +234,7 @@ function validateForm(fields, form){
 	var errors = {};
 	// Validate a username field
 	if(fields.includes("username") && (!form["username"] || (form["username"].value.length > 25 || form["username"].value == ""))){
-		errors["username"] = (form["username"].value.length == "" ? "Please enter a username" : "Please enter a username that is shorter than 25 characters");
+		errors["username"] = (form["username"].value == "" ? "Please enter a username" : "Please enter a username that is shorter than 25 characters");
 	}
 
 	// Validate a password field
@@ -242,12 +242,16 @@ function validateForm(fields, form){
 		errors["password"] = "Please enter a password that is greater than 6 characters";
 	}
 
-	if(fields.includes("check_password")  && (!form["check_password"] || (form["check_password"].value != form["password"].value) && form["check_password"].value != "")){
+	if(fields.includes("check_password")  && (!form["check_password"] || (form["check_password"].value != form["password"].value) || form["check_password"].value != "")){
 		errors["check_password"] = "Passwords don't match";
 	}
 
 	if(fields.includes("exam_room") && (!form["exam_room"] || (form["exam_room"].value.length > 20))){
 		errors["exam_room"] = "Please enter a room less than 20 characters";
+	}
+
+	if(fields.includes("exam_name") && (!form["exam_name"] || (form["exam_name"].value.length > 45 || form["exam_name"].value == ""))){
+		errors["exam_name"] = (form["exam_name"].value == "" ? "Please enter an exam name" : "Please enter a exam name that is shorter than 45 characters");;
 	}
 
 	// Validate exam date
@@ -260,7 +264,7 @@ function validateForm(fields, form){
 	}
 
 	// Validate exam time
-	if(fields.includes("exam_time") && (!form["exam_time"] || (form["exam_time"].value.match(/^([0-9]{2}:?){1,3}$/)))){
+	if(fields.includes("exam_time") && (!form["exam_time"] || (form["exam_time"].value.match(/^([0-9]{2}:?){1,3} [AP]M$/)))){
 		errors["exam_time"] = "Please enter a legitimate time.";
 	}
 

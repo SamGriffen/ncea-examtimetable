@@ -45,6 +45,10 @@ function validatePOST(){
     $errors["exam_room"] = "Please no more than 20 characters";
   }
 
+  if(isset($_POST["exam_name"]) && (strlen($_POST["exam_name"]) > 45 || $_POST["exam_name"] == "")){
+		$errors["exam_name"] = ($_POST["exam_name"] == "" ? "Please enter an exam name" : "Please enter a exam name that is shorter than 45 characters");;
+	}
+
   // Validate a date
   if(isset($_POST["exam_date"])){
     // Form a new date object

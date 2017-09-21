@@ -128,7 +128,7 @@ function adminEditExamConf(parameters){
     event.preventDefault();
 
     // If the form is valid
-    if(validateForm( ["exam_name", "exam_date", "exam_time"], event.target)){
+    if(validateForm(["exam_name", "exam_date", "exam_time"], event.target)){
       let tar = event.target;
       var name = tar["exam_name"].value;
 
@@ -145,7 +145,7 @@ function adminEditExamConf(parameters){
         if(data.status == "success"){
           // Update the exam on the screen
           exam.exam_name = name;
-          exam.exam_datetime = (new Date(exam.exam_datetime).getTime() == new Date(date).getTime()?null:date);
+          exam.exam_datetime = date;;
           adminPopulateHook();
           closeModal();
         }
