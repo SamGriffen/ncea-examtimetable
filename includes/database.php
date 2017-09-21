@@ -13,6 +13,7 @@ if (mysqli_connect_errno()) {
 //Check if a session is set
 if(!isset($_SESSION)){
   // If there is no session, create one
+  session_name("exams");
   session_start();
 }
 

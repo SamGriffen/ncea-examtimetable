@@ -242,7 +242,7 @@ function validateForm(fields, form){
 		errors["password"] = "Please enter a password that is greater than 6 characters";
 	}
 
-	if(fields.includes("check_password")  && (!form["check_password"] || (form["check_password"].value != form["password"].value) || form["check_password"].value != "")){
+	if(fields.includes("check_password")  && (!form["check_password"] || (form["check_password"].value != form["password"].value))){
 		errors["check_password"] = "Passwords don't match";
 	}
 
