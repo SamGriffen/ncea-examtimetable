@@ -669,30 +669,32 @@ main {
   font-size: 1.6em;
   width: 50%;
   height: 100%;
+}
+
+.exam-buttons-cont button, .add-exam {
   -webkit-transition: 0.15s ease-in-out background-color;
 	-moz-transition: 0.15s ease-in-out background-color;
 	-o-transition: 0.15s ease-in-out background-color;
 	transition: 0.15s ease-in-out background-color;
 }
 
-.exam-buttons-cont button:hover {
-
+.exam-buttons-cont button:hover, .add-exam:hover {
   cursor: pointer;
 }
 
-.level-1 button:hover {
+.level-1 button:hover, .level-1.add-exam:hover  {
   background-color: #56A19A;
 }
 
-.level-2 button:hover {
+.level-2 button:hover, .level-2.add-exam:hover  {
   background-color: #75AB6A;
 }
 
-.level-3 button:hover {
+.level-3 button:hover, .level-3.add-exam:hover  {
   background-color: #C87342;
 }
 
-.level-4 button:hover {
+.level-4 button:hover, .level-4.add-exam:hover  {
   background-color: #C74E44;
 }
 
