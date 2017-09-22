@@ -1,7 +1,6 @@
 body {
   font-size: 100%;
   margin: 0;
-  margin-bottom: 4em;
   font-family: 'Open Sans', sans-serif;
   color: #333333;
 }
@@ -328,23 +327,50 @@ input[type="checkbox"]:checked + label:after {
 
 main {
   margin: 0 1em;
-  margin-top: 4em;
+  margin-top: 3em;
 }
 
-main header h1{
-  margin-top: 2.9em;
+.vert-align-cont {
+  height:100px;
+  width:100%;
+  vertical-align:middle;
+  display:inline-block;
+  box-sizing: border-box;
+}
+
+.vert-align-cont h1 {
+  margin:0;
+  vertical-align:middle;
+  display:inline-block;
+  box-sizing: border-box;
+}
+
+.add-cont {
+  float:right;
+  display:inline-block;
+  height:100%;
+  box-sizing: border-box;
 }
 
 .add-button {
+  vertical-align:middle;
+  display:inline-block;
+  box-sizing: border-box;
   font-size: 3em;
-  position: absolute;
-  top: 1.32em;
-  right: 0.2em;
   color: #e24e42;
   -webkit-transition: 0.15s ease-in-out color;
 	-moz-transition: 0.15s ease-in-out color;
 	-o-transition: 0.15s ease-in-out color;
 	transition: 0.15s ease-in-out color;
+}
+
+.vert-align-cont:after, .add-cont:after, .add-button:after {
+  height:100%;
+  content:'';
+  font-size:0;
+  vertical-align:middle;
+  display:inline-block;
+  box-sizing: border-box;
 }
 
 .add-button:hover {
@@ -707,7 +733,7 @@ main header h1{
   main {
     max-width: 66em;
     margin: 0 auto;
-    margin-top: 5em;
+    margin-top: 3em;
     position: relative;
   }
 
