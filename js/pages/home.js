@@ -50,10 +50,10 @@ function populateAddModal(){
     if(regexp.exec(exam.exam_name) && !checkUserExams(exam.exam_id)){
       // Formulate HTML string
       let string = `
-      <div class="exam-block exam-cont level-${exam.exam_level}">
+      <div class="exam-block exam-cont add-exam level-${exam.exam_level}" data-exam=${exam.exam_id}>
         <h4>${exam.exam_name}</h4>
         <p>${date.date} ${date.time}</p>
-        <i class="icon-add" data-exam=${exam.exam_id}></i>
+        <i class="icon-add"></i>
       </div>
       `;
       $("#modal-exam-list").innerHTML += string;
@@ -61,10 +61,17 @@ function populateAddModal(){
     }
   }
   // Iterate over all the buttons just added. I tried doing this within the loop that adds buttons, to avoid an extra loop. However I could not for the life of me figure out why it would not work. Maybe my code was simply shit
-  var buttons = document.querySelectorAll(".icon-add");
+  var buttons = document.querySelectorAll(".add-exam");
   for(let button of buttons){
+      console.log(button);
       button.addEventListener("click", function(event){
-        var id = event.target.getAttribute("data-exam");
+        event.stopPropagation();
+        // Get the correct target for the event
+        let target = (event.target.getAttribute("data-exam")?event.target:getNearestElClass(event.target, "add-exam"));
+
+        console.log(target);
+
+        var id = target.getAttribute("data-exam");
 
 
         // Get the exam
