@@ -48,7 +48,15 @@ function populateAddModal(){
     var date = procDATETIME(exam.exam_datetime);
     // If the exam matches the query entered, list it
     if(regexp.exec(exam.exam_name) && !checkUserExams(exam.exam_id)){
-      $("#modal-exam-list").innerHTML += "<div class='exam-block exam-cont'><h4>"+exam.exam_name+"</h4><p>"+date.date+" "+date.time+"</p><i class='icon-add' data-exam='"+exam.exam_id+"'></i></div>";
+      // Formulate HTML string
+      let string = `
+      <div class="exam-block exam-cont level-${exam.exam_level}">
+        <h4>${exam.exam_name}</h4>
+        <p>${date.date} ${date.time}</p>
+        <i class="icon-add" data-exam=${exam.exam_id}></i>
+      </div>
+      `;
+      $("#modal-exam-list").innerHTML += string;
       found = true;
     }
   }

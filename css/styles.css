@@ -565,8 +565,24 @@ main header h1{
   color: #fff;
   text-align: left;
   padding: 1em;
-  background-color: #03A9F4;
   position: relative;
+}
+
+/* COLOURS STYLES FOR EXAM BLOCKS */
+.level-1 {
+  background-color: #68C4BB;
+}
+
+.level-2 {
+  background-color: #8ED081;
+}
+
+.level-3 {
+  background-color: #F4AD33;
+}
+
+.level-4 {
+  background-color: #F25F52;
 }
 
 .right-button {
@@ -594,7 +610,7 @@ main header h1{
 }
 
 .exam-block i.icon-add:focus, .exam-block i.icon-add:hover {
-  background-color: #0288D1;
+  /*background-color: #0288D1;*/
 }
 
 .main-list {
@@ -611,7 +627,7 @@ main header h1{
   height: 3em;
   max-height: 0em;
   overflow: hidden;
-  background-color: #03A9F4;
+  /*background-color: #03A9F4;*/
   -webkit-transition: 0.15s ease-in-out max-height;
 	-moz-transition: 0.15s ease-in-out max-height;
 	-o-transition: 0.15s ease-in-out max-height;
@@ -620,7 +636,7 @@ main header h1{
 
 .exam-buttons-cont button {
   -webkit-appearance: none;
-  background-color: #03A9F4;
+  background-color: inherit;
   outline: none;
   border: none;
   color: #fff;
@@ -634,12 +650,26 @@ main header h1{
 }
 
 .exam-buttons-cont button:hover {
-  background-color: #039BE5;
   cursor: pointer;
 }
 
+.level-1 button:hover {
+  background-color: #56A19A;
+}
+
+.level-2 button:hover {
+  background-color: #75AB6A;
+}
+
+.level-3 button:hover {
+  background-color: #C88E2A;
+}
+
+.level-4 button:hover {
+  background-color: #C74E44;
+}
+
 .exam-buttons-cont button:focus {
-  background-color: #0288D1;
 }
 
 .main-list.buttons-open ~ .exam-buttons-cont {

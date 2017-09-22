@@ -488,7 +488,7 @@ function populateExams(inExams, fields, buttons = null){
     var date = procDATETIME(exam_date);
 
 		// Create a string for parsing into a DOM object
-		var string = "<div class='exam-cont'><div class='exam-block main-list'><h4>"+getLevelString(exam.exam_level)+" ";
+		var string = `<div class='exam-cont level-${exam.exam_level}'><div class='exam-block main-list'><h4>`+getLevelString(exam.exam_level)+" ";
 
 		string += exam.exam_name+"</h4><p>"+date.date+" "+date.time+"</p>"+(fields.includes("room")? "<p>"+(exam.userexam_room?"In Room: "+exam.userexam_room:"Room Unknown")+"</p>":"")+(buttons?"<i class='icon-dropdown right-button'></i>":"")+"</div>"+(buttons?"<div class='exam-buttons-cont' data-exam='"+exam.exam_id+"'><button><i class='"+buttons[0].class+"'></i></button><button><i class='"+buttons[1].class+"'></i></button></div>":"")+"</div>";
 
