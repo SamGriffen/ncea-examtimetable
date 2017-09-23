@@ -32,7 +32,7 @@ window.addEventListener("DOMContentLoaded", function(event){
     // If the registration field is invisible, toggle it visible
     if(rField.getAttribute("data-state") == "invisible"){
       rField.setAttribute("data-state", "visible");
-      rField.innerHTML = "<input type='password' name='check_password' required><label for='check_password'>Password Again</label>";
+      rField.innerHTML = "<input type='password' name='check_password' required><label for='check_password' class='red'>Password Again</label>";
       event.target.innerHTML = "Login";
       submit.setAttribute("value", "Register");
     }

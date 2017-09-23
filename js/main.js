@@ -286,7 +286,7 @@ function populateModal(action, parameters = {}){
   // dictionary that contains all information about data to put inside a modal, based on the action input. Also a function to call on setup of the dialog
   var modals = {
 		confirm : {
-			data: "<section></section><div class='button-cont confirm-cont'><button class='button' id='modal-deny'>Cancel</button><button class='button' id='modal-confirm'>Do It!</button></div>",
+			data: "<section></section><div class='button-cont confirm-cont'><button class='button red' id='modal-deny'>Cancel</button><button class='button green' id='modal-confirm'>Do It!</button></div>",
 			function: confirmConfigure,
 		},
 		addExam : {
@@ -344,7 +344,7 @@ function populateModal(action, parameters = {}){
 
 // Function to show a success tick on the modal dialog
 function modalSuccess(message){
-  $("#modal-data").innerHTML = "<i class='icon-tick modal-success'></i><p>"+message+"</p><button id='modal-success-button' class='button'>Ok</button>";
+  $("#modal-data").innerHTML = "<i class='icon-tick modal-success'></i><p>"+message+"</p><button id='modal-success-button' class='button green'>Ok</button>";
   $("#modal-success-button").addEventListener("click", function(){closeModal()});
 }
 

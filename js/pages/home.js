@@ -59,7 +59,8 @@ function populateAddModal(){
 
   // If an exam was not found, print a message to the screen
   if(!found){
-    $("#modal-exam-list").innerHTML = "<p>No exams found.</p>";
+    let string = `<p>Your search for "${query}" had no results. Maybe the exam has a different name? (E.g "Mathematics and Statistics" is simply listed as "Statistics")</p>`;
+    $("#modal-exam-list").innerHTML = string;
   }
 }
 
@@ -139,12 +140,12 @@ function editExamConf(parameters){
   <form id='exam-form'>
     <div class="input-group">
       <input type='text' name='exam_room' placeholder="I Don't Know">
-      <label for="exam_room">Exam Room</label>
+      <label for="exam_room" class="red">Exam Room</label>
     </div>
     <div id="date-input">
       <div class="input-group">
         <input type='date' name='exam_date' id="datepicker" value="${date.htmlDate}" ${(clash?"":"disabled")}>
-        <label for="exam_date">Exam Date</label>
+        <label for="exam_date" class='red'>Exam Date & Time</label>
         <div id="exam-time-select">
           <input type='time' name='exam_time' id="timepicker" value="${date.htmlTime}" ${(clash?"":"disabled")}>
         </div>
@@ -156,8 +157,8 @@ function editExamConf(parameters){
       <label for="clash">I have a clash</label>
     </div>
     <div>
-      <button type="button" class="button" id="cancel">Cancel</button>
-      <input type='submit' value='Save'>
+      <button type="button" class="button red" id="cancel">Cancel</button>
+      <input type='submit' value='Save' class="green">
     </div>
   </form>
   `;
