@@ -75,7 +75,7 @@ function populateAddModal(){
         var exam = getExamId(exams[level], id);
 
         // See if the user has an exam room to add
-        populateModal("editExam", {exam:exam, confFunc:editExamConf, heading:`Add ${getLevelString(exam.exam_level)} ${exam.exam_name}`, message:"Is this information correct? If not, you can change any of it."});
+        populateModal("editExam", {exam:exam, confFunc:editExamConf, heading:`Add ${getLevelString(exam.exam_level)} ${exam.exam_name}`, message:"If you know the room, you can add  it. If you have a clash, you can click \"I have a clash\" to change the date.", subFunc:addExam});
       })
   }
 
@@ -88,33 +88,7 @@ function populateAddModal(){
 // Function for configuring the add exam room modal
 function confExamAdd(parameters){
   $("#modal-data h1").innerHTML = "Add Room for "+getLevelString(parameters.exam.exam_level)+" "+parameters.exam.exam_name;
-  document.forms["exam-room-form"].addEventListener("submit", function(event){
-    event.preventDefault();
-    var formData = new FormData();
-    formData.append("exam_id", parameters.exam.exam_id);
-
-    var room = document.forms["exam-room-form"]["exam_room"].value;
-
-    if(room != ""){
-      formData.append("exam_room", room);
-    }
-    if(room == "" || validateForm(["exam_room"], event.target)){
-      // Send an AJAX query to the server
-      AJAX("includes/processors/addExam.php", formData, function(data){
-        if(data.status == "success"){
-          var exam = data.data.exam;
-          // Remove the exam from the array that it is currently in
-          removeExam(exam);
-          data.data['confFunc'] = completeAddExam;
-          loadExams(0, homePopulateHook);
-          closeModal();
-        }
-        else{
-          handleFormAJAX(event.target, data);
-        }
-      })
-    }
-  })
+  document.forms["exam-room-form"].addEventListener("submit", )
 }
 
 // Function for completeing the addition of an exam
@@ -132,7 +106,7 @@ function homePopulateHook(){
         var exam = getExamId(exams[0], id);
 
         // Populate the modal with the edit exam info dialog
-        populateModal("editExam", {exam:exam, confFunc:editExamConf});
+        populateModal("editExam", {exam:exam, confFunc:editExamConf, subFunc:updateExam});
         openModal();
       }
     },
@@ -260,7 +234,13 @@ function editExamConf(parameters){
     // if(document.forms["exam-form"]["userexam_date"].querySelector())
     // Alert the user that they can now edit the date
     // If the user has a clash, tell them they can edit the date
-    if(!clash)toggleMessage($("#date-input"), "You can now edit the date", "dateedit", "okay");
+    console.log("Toggling");
+    toggleMessage($("#date-input"), "You can now edit the date", "dateedit", "okay");
+
+    clashExams = checkClashes(exam.exam_id, getExamDatetime(document.forms["exam-form"]));
+
+    // Manage clash messages
+    manageClashes($("#date-input"), clashExams);
   })
 
   // If the date or time inputs change, set the user exam time and manage the clash messages
@@ -271,7 +251,6 @@ function editExamConf(parameters){
     exam.userexam_datetime = (originalDate = new Date(date).getTime() == new Date(exam.exam_datetime).getTime() ? null : date);
 
     clashExams = checkClashes(exam.exam_id, date);
-    console.log(clashExams);
 
     manageClashes($("#date-input"), clashExams);
   })
@@ -285,53 +264,29 @@ function editExamConf(parameters){
   $("#modal-data #exam-form")["exam_room"].value = (exam.userexam_room ? exam.userexam_room : "");
 
   // Add an event listener to the form
-  document.forms["exam-form"].addEventListener("submit", function(event){
-    // Prevent the form from submitting
-    event.preventDefault();
-
-    // If the form is valid
-    if(validateForm(["exam_room", "exam_date", "exam_time"], event.target)){
-      let tar = event.target;
-      var room = tar["exam_room"].value;
-
-      // Create the date of the exam
-      let date = getExamDatetime(tar);
-
-      var data = new FormData();
-      data.append("exam_id", exam.exam_id);
-      data.append("exam_room", room);
-      data.append("exam_date", date);
-
-      // Send a request to the server to update the exam
-      AJAX("includes/processors/editUserExam.php", data, function(data){
-        if(data.status == "success"){
-          // Update the exam on the screen
-          exam.userexam_room = room;
-          exam.userexam_datetime = (new Date(exam.exam_datetime).getTime() == new Date(date).getTime()?null:date);
-          homePopulateHook();
-          closeModal();
-        }
-        else{
-          appendFormErrors(tar, data.errors);
-        }
-      })
-    }
+  document.forms["exam-form"].addEventListener("submit", (event)=>{
+    parameters.subFunc(event, exam);
   })
 }
 
 // Function to append clash strings to an element
 function manageClashes(element, clashExams){
-  // Get all of the current errors on the element, and remove them all. The element passed is the date input to append the elements AFTER. Therefore, the errors will be on elements parentNode
-  let errors = element.parentNode.querySelectorAll(".message");
-
-  for(let error of errors){
-    removeElement(error);
-  }
+  removeErrors(element);
 
   if(clashExams){
     for(let clash of clashExams){
       toggleMessage(element, `This time clashes with ${getLevelString(clash.exam_level)} ${clash.exam_name}`, `clash${clash.exam_id}`, "error");
     }
+  }
+}
+
+// Function to remove all messages that have been appended to an element
+function removeErrors(element){
+  // Get all of the current errors on the element, and remove them all. The element passed is the date input to append the elements AFTER. Therefore, the errors will be on elements parentNode
+  let errors = element.parentNode.querySelectorAll(".error");
+
+  for(let error of errors){
+    removeElement(error);
   }
 }
 
@@ -345,5 +300,68 @@ function getExamDatetime(form){
 function toggleDisable(elements){
   for(let element of elements){
     element.disabled = !element.disabled;
+  }
+}
+
+// Function to update an exam. To be called from a submit event
+function updateExam(event, exam){
+  // Prevent the form from submitting
+  event.preventDefault();
+
+  // If the form is valid
+  if(validateForm(["exam_room", "exam_date", "exam_time"], event.target)){
+    let tar = event.target;
+    var room = tar["exam_room"].value;
+
+    // Create the date of the exam
+    let date = getExamDatetime(tar);
+
+    var data = new FormData();
+    data.append("exam_id", exam.exam_id);
+    data.append("exam_room", room);
+    data.append("exam_date", date);
+
+    // Send a request to the server to update the exam
+    AJAX("includes/processors/editUserExam.php", data, function(data){
+      if(data.status == "success"){
+        // Update the exam on the screen
+        exam.userexam_room = room;
+        exam.userexam_datetime = (new Date(exam.exam_datetime).getTime() == new Date(date).getTime()?null:date);
+        homePopulateHook();
+        closeModal();
+      }
+      else{
+        appendFormErrors(tar, data.errors);
+      }
+    })
+  }
+}
+
+// Function for adding an exam.
+function addExam(event, exam){
+  event.preventDefault();
+  var formData = new FormData();
+  formData.append("exam_id", exam.exam_id);
+
+  var room = document.forms["exam-form"]["exam_room"].value;
+
+  if(room != ""){
+    formData.append("exam_room", room);
+  }
+  if(room == "" || validateForm(["exam_room"], event.target)){
+    // Send an AJAX query to the server
+    AJAX("includes/processors/addExam.php", formData, function(data){
+      if(data.status == "success"){
+        exam = data.data.exam;
+        // Remove the exam from the array that it is currently in
+        removeExam(exam);
+        data.data['confFunc'] = completeAddExam;
+        loadExams(0, homePopulateHook);
+        closeModal();
+      }
+      else{
+        handleFormAJAX(event.target, data);
+      }
+    })
   }
 }
