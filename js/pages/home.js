@@ -63,13 +63,10 @@ function populateAddModal(){
   // Iterate over all the buttons just added. I tried doing this within the loop that adds buttons, to avoid an extra loop. However I could not for the life of me figure out why it would not work. Maybe my code was simply shit
   var buttons = document.querySelectorAll(".add-exam");
   for(let button of buttons){
-      console.log(button);
       button.addEventListener("click", function(event){
         event.stopPropagation();
         // Get the correct target for the event
         let target = (event.target.getAttribute("data-exam")?event.target:getNearestElClass(event.target, "add-exam"));
-
-        console.log(target);
 
         var id = target.getAttribute("data-exam");
 
@@ -78,7 +75,7 @@ function populateAddModal(){
         var exam = getExamId(exams[level], id);
 
         // See if the user has an exam room to add
-        populateModal("addRoom", {exam:exam, confFunc:confExamAdd});
+        populateModal("editExam", {exam:exam, confFunc:editExamConf, heading:`Add ${getLevelString(exam.exam_level)} ${exam.exam_name}`, message:"Is this information correct? If not, you can change any of it."});
       })
   }
 
@@ -169,13 +166,19 @@ function leaveExam(exam){
 	})
 }
 
-// Function to configure the edit exam data dialog
+// Function to bring up a modal to edit data for an exam the user is adding, or to edit an exam the user is currently in. Must be passed a process to call once the user submits the form, and a process to call when the user cancels the form. These are passed via the parameters so that the populateModal function can pass them.
 function editExamConf(parameters){
   var exam = parameters.exam;
 
+  // Check if the user has set a clash already
   let clash = (exam.userexam_datetime?true:false);
 
   let exam_date = (clash?exam.userexam_datetime:exam.exam_datetime);
+  // Check if a clash exists, and if it does, get the clash exam data
+  let clashExams = checkClashes(exam.exam_id, exam_date);
+
+  clash |= (clashExams != false);
+
   var date = procDATETIME(exam_date);
   var realDate = procDATETIME(exam.exam_datetime);
 
@@ -183,7 +186,7 @@ function editExamConf(parameters){
   var string = `
   <form id='exam-form'>
     <div class="input-group">
-      <input type='text' name='exam_room' placeholder="Unknown">
+      <input type='text' name='exam_room' placeholder="I Don't Know">
       <label for="exam_room">Exam Room</label>
     </div>
     <div id="date-input">
@@ -209,7 +212,7 @@ function editExamConf(parameters){
   $("#modal-data section").innerHTML += string;
 
   // If the user has a clash, tell them they can edit the date
-  if(clash)toggleMessage($("#date-input"), "You can edit the date", "dateedit", "okay");
+  manageClashes($("#date-input"), clashExams);
 
   // Create a datepicker
   var datePicker = flatpickr("#datepicker", {
@@ -235,30 +238,48 @@ function editExamConf(parameters){
 
     // Preload time with defaultDate instead:
     // defaultDate: "3:30"
-})
+  })
+
+  // Get references to the date and time elements
+  let dateEl = document.forms["exam-form"]["exam_date"].nextSibling;
+  let timeEl = document.forms["exam-form"]["exam_time"].nextSibling;
 
   // On click of the "I have a clash" checkbox, enable the date field
   document.forms["exam-form"]["clash"].addEventListener("change", (event)=>{
-    let dateEl = document.forms["exam-form"]["exam_date"].nextSibling;
-    let timeEl = document.forms["exam-form"]["exam_time"].nextSibling;
     // Toggle whether the input is disabled
-    dateEl.disabled = !dateEl.disabled;
-    timeEl.disabled = !timeEl.disabled;
+    toggleDisable([dateEl, timeEl]);
 
     // If it has been disabled, set the time to the exam default time
     if(dateEl.disabled){
       datePicker.setDate(realDate.htmlDate);
       timePicker.setDate(realDate.htmlTime);
+      exam.userexam_datetime = null;
     }
 
     // If a message exists, remove it, otherwise, add it
     // if(document.forms["exam-form"]["userexam_date"].querySelector())
     // Alert the user that they can now edit the date
+    // If the user has a clash, tell them they can edit the date
     if(!clash)toggleMessage($("#date-input"), "You can now edit the date", "dateedit", "okay");
   })
 
+  // If the date or time inputs change, set the user exam time and manage the clash messages
+  $("#exam-form #date-input").addEventListener("change", (event)=>{
+    let date = getExamDatetime(document.forms["exam-form"]);
+
+    // If it is, remove the userexam datetime
+    exam.userexam_datetime = (originalDate = new Date(date).getTime() == new Date(exam.exam_datetime).getTime() ? null : date);
+
+    clashExams = checkClashes(exam.exam_id, date);
+    console.log(clashExams);
+
+    manageClashes($("#date-input"), clashExams);
+  })
   // Add a title to the modal
-  $("#modal-data h1").innerHTML = getLevelString(exam.exam_level)+` ${exam.exam_name} Details`;
+  $("#modal-data h1").innerHTML = (parameters.heading? parameters.heading:getLevelString(exam.exam_level)+` ${exam.exam_name} Details`);
+
+  // If a subtitle is set, set it into the modal
+  if(parameters.message || clash)$("#modal-data #message").innerHTML = (clash?"This exam clashes with one or more of your exams. Please talk to your school to make arrangements concerning this clash.":parameters.message);
 
   // Put the exam room into the edit field
   $("#modal-data #exam-form")["exam_room"].value = (exam.userexam_room ? exam.userexam_room : "");
@@ -274,7 +295,7 @@ function editExamConf(parameters){
       var room = tar["exam_room"].value;
 
       // Create the date of the exam
-      let date = `${tar["exam_date"].value} ${tar["exam_time"].value}`;
+      let date = getExamDatetime(tar);
 
       var data = new FormData();
       data.append("exam_id", exam.exam_id);
@@ -296,4 +317,33 @@ function editExamConf(parameters){
       })
     }
   })
+}
+
+// Function to append clash strings to an element
+function manageClashes(element, clashExams){
+  // Get all of the current errors on the element, and remove them all. The element passed is the date input to append the elements AFTER. Therefore, the errors will be on elements parentNode
+  let errors = element.parentNode.querySelectorAll(".message");
+
+  for(let error of errors){
+    removeElement(error);
+  }
+
+  if(clashExams){
+    for(let clash of clashExams){
+      toggleMessage(element, `This time clashes with ${getLevelString(clash.exam_level)} ${clash.exam_name}`, `clash${clash.exam_id}`, "error");
+    }
+  }
+}
+
+// Function to get the exam time from an edit modal
+function getExamDatetime(form){
+  // Create the date of the exam
+  return `${form["exam_date"].value} ${form["exam_time"].value}`;
+}
+
+// Function to toggle wether a set of elements are disabled
+function toggleDisable(elements){
+  for(let element of elements){
+    element.disabled = !element.disabled;
+  }
 }

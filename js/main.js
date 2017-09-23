@@ -52,6 +52,8 @@ window.addEventListener("load", function(){
 				$("#menu").style.maxHeight = null;
 			}
 		})
+
+		//
 	}
 	// Attach click listeners to the modal dialogs
 	$("#modal-exit").onclick = function(){closeModal();};
@@ -328,7 +330,7 @@ function populateModal(action, parameters = {}){
 			function:parameters.confFunc,
 		},
 		editExam : {
-			data : "<section><header><h1></h1></header></section>",
+			data : "<section><header><h1></h1><p id='message'></p></header></section>",
 			function:parameters.confFunc,
 		}
   };
@@ -627,4 +629,22 @@ function manageBlocks(el = null){
 	for (let item of openItems) {
 		if(!(item == el)) item.classList.remove("buttons-open");
 	}
+}
+
+// Function to check the userexam array for any clashes
+function checkClashes(checkId, checkDate){
+	// Create an array of clashes
+	let clashes = [];
+
+	for(let exam of exams[0]){
+		if(exam.exam_id != checkId && ((new Date(exam.exam_datetime).getTime() == new Date(checkDate).getTime()) || (exam.userexam_datetime && (new Date(exam.userexam_datetime).getTime() == new Date(checkDate).getTime()))))clashes.push(exam);
+	}
+	return (clashes.length?clashes:false);
+}
+
+// Function to substitute values into a string
+function stringReplace(string, values){
+	return string.replace(/{(\d+)}/g, (matchstr, dig)=>{
+		return typeof values[dig] != 'undefined' ? values[dig] : matchstr;
+	})
 }
