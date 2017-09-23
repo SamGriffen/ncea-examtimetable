@@ -4,29 +4,7 @@ var level = 1;
 // Add an event listener to the load of the page
 window.addEventListener("load", function(){
   loadExams(0, homePopulateHook);
-  $(".add-button").addEventListener("click", function(event){
-    populateModal("addExam", {confFunc:function(){
-      // When a level is selected, modify the global variable
-      $(`#search-menu input[value='${level}']`).setAttribute("checked", "checked");
-
-      // When the search bar changes at all, redraw the add window
-      document.forms["search-menu"].addEventListener("change", function(event){
-        level = document.forms["search-menu"]["level"].value;
-        populateAddModal();
-      })
-    }});
-
-    document.forms["search-menu"].addEventListener("input", function(event){
-      // Simulate change event on the form. This way it only gets updated once, and the list updates on input and on change
-      var inputEvent = new Event('change', {
-        'bubbles': true,
-        'cancelable': true
-      });
-      event.target.dispatchEvent(inputEvent);
-    })
-    populateAddModal();
-    openModal();
-  });
+  $(".add-button").addEventListener("click", addExamModal);
 })
 
 // Function to update the exams that show in the add exam window
@@ -75,7 +53,7 @@ function populateAddModal(){
         var exam = getExamId(exams[level], id);
 
         // See if the user has an exam room to add
-        populateModal("editExam", {exam:exam, confFunc:editExamConf, heading:`Add ${getLevelString(exam.exam_level)} ${exam.exam_name}`, message:"If you know the room, you can add  it. If you have a clash, you can click \"I have a clash\" to change the date.", subFunc:addExam});
+        populateModal("editExam", {exam:exam, confFunc:editExamConf, heading:`Add ${getLevelString(exam.exam_level)} ${exam.exam_name}`, message:"If you know the room, you can add  it. If you have a clash, you can click \"I have a clash\" to change the date.", subFunc:addExam, cancelFunc:addExamModal});
       })
   }
 
@@ -106,7 +84,7 @@ function homePopulateHook(){
         var exam = getExamId(exams[0], id);
 
         // Populate the modal with the edit exam info dialog
-        populateModal("editExam", {exam:exam, confFunc:editExamConf, subFunc:updateExam});
+        populateModal("editExam", {exam:exam, confFunc:editExamConf, subFunc:updateExam, cancelFunc:closeModal});
         openModal();
       }
     },
@@ -178,6 +156,7 @@ function editExamConf(parameters){
       <label for="clash">I have a clash</label>
     </div>
     <div>
+      <button type="button" class="button" id="cancel">Cancel</button>
       <input type='submit' value='Save'>
     </div>
   </form>
@@ -218,6 +197,8 @@ function editExamConf(parameters){
   let dateEl = document.forms["exam-form"]["exam_date"].nextSibling;
   let timeEl = document.forms["exam-form"]["exam_time"].nextSibling;
 
+  if(clash)toggleMessage($("#date-input"), "You can edit the date and time above", "dateedit", "okay");
+
   // On click of the "I have a clash" checkbox, enable the date field
   document.forms["exam-form"]["clash"].addEventListener("change", (event)=>{
     // Toggle whether the input is disabled
@@ -234,7 +215,6 @@ function editExamConf(parameters){
     // if(document.forms["exam-form"]["userexam_date"].querySelector())
     // Alert the user that they can now edit the date
     // If the user has a clash, tell them they can edit the date
-    console.log("Toggling");
     toggleMessage($("#date-input"), "You can now edit the date", "dateedit", "okay");
 
     clashExams = checkClashes(exam.exam_id, getExamDatetime(document.forms["exam-form"]));
@@ -258,7 +238,7 @@ function editExamConf(parameters){
   $("#modal-data h1").innerHTML = (parameters.heading? parameters.heading:getLevelString(exam.exam_level)+` ${exam.exam_name} Details`);
 
   // If a subtitle is set, set it into the modal
-  if(parameters.message || clash)$("#modal-data #message").innerHTML = (clash?"This exam clashes with one or more of your exams. Please talk to your school to make arrangements concerning this clash.":parameters.message);
+  if(parameters.message)$("#modal-data #message").innerHTML = parameters.message;
 
   // Put the exam room into the edit field
   $("#modal-data #exam-form")["exam_room"].value = (exam.userexam_room ? exam.userexam_room : "");
@@ -266,6 +246,11 @@ function editExamConf(parameters){
   // Add an event listener to the form
   document.forms["exam-form"].addEventListener("submit", (event)=>{
     parameters.subFunc(event, exam);
+  })
+
+  // Add an event listener to the cancel button
+  document.forms["exam-form"].querySelector("#cancel").addEventListener("click", (event)=>{
+    parameters.cancelFunc();
   })
 }
 
@@ -364,4 +349,29 @@ function addExam(event, exam){
       }
     })
   }
+}
+
+// Function to bring up the add exam window
+function addExamModal(){
+  populateModal("addExam", {confFunc:function(){
+    // When a level is selected, modify the global variable
+    $(`#search-menu input[value='${level}']`).setAttribute("checked", "checked");
+
+    // When the search bar changes at all, redraw the add window
+    document.forms["search-menu"].addEventListener("change", function(event){
+      level = document.forms["search-menu"]["level"].value;
+      populateAddModal();
+    })
+  }});
+
+  document.forms["search-menu"].addEventListener("input", function(event){
+    // Simulate change event on the form. This way it only gets updated once, and the list updates on input and on change
+    var inputEvent = new Event('change', {
+      'bubbles': true,
+      'cancelable': true
+    });
+    event.target.dispatchEvent(inputEvent);
+  })
+  populateAddModal();
+  openModal();
 }
