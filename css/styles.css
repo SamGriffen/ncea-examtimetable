@@ -39,16 +39,17 @@ input[type="date"], input[type="time"] {
 input[type="text"], input[type="password"], input[type="email"] {
   font-size: 1.2em;
   padding: 0.5em 0.5em 0.5em 0.2em;
-  max-width: 15em;
+  max-width: 100%;
   border: none;
   border-bottom: 2px solid #757575;
   transition: 0.15s ease-in border-color;
   width: 100%;
+  box-sizing: border-box;
 }
 
 input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus {
   outline: none;
-  border-color: #E24E42;
+  /*border-color: #E24E42;*/
 }
 
 input[type="text"]:disabled, input[type="password"]:disabled, input[type="email"]:disabled, .flatpickr-input:disabled {
@@ -81,12 +82,12 @@ input[type="text"]:disabled:hover, input[type="password"]:disabled:hover, input[
 .input-group > input:focus~label, .input-group > input:valid~label, .input-group > input:disabled~label, .input-group > input#datepicker~label{
   top: -1.2em;
   font-size: 1em;
-  color: #E24E42 ;
+  /*color: #E24E42 ;*/
 }
 
 /* INPUTS */
-.button, #upload-button, input[type="submit"], input[type="reset"] {
-  background-color: #E24E42;
+.button, input[type="submit"], input[type="reset"] {
+  /*background-color: #E24E42;*/
   border: none;
   color: #fff;
   padding: 0.75em;
@@ -96,32 +97,32 @@ input[type="text"]:disabled:hover, input[type="password"]:disabled:hover, input[
   text-align: center;
   text-decoration: none;
   -webkit-appearance: none;
-  box-shadow: 0 0.0025em 0.10em rgba(0,0,0,0.10), 0 0.0025em 0.10em rgba(0,0,0,0.20);
+  /*box-shadow: 0 0.0025em 0.10em rgba(0,0,0,0.10), 0 0.0025em 0.10em rgba(0,0,0,0.20);*/
   width: 6em;
 }
 
-.button:hover, #upload-button:hover, input[type="submit"]:hover, input[type="reset"]:hover {
-  background-color: #CE473C;
+.button:hover, input[type="submit"]:hover, input[type="reset"]:hover {
+  /*background-color: #CE473C;*/
   color: #fff;
   cursor: pointer;
 }
 
-.button:focus, #upload-button:focus, input[type="submit"]:focus, input[type="reset"]:focus {
+.button:focus, input[type="submit"]:focus, input[type="reset"]:focus {
   outline: none;
   color: #fff;
-  background-color: #B94037;
+  /*background-color: #B94037;*/
 }
 
 #modal-deny {
-  background-color: #E24E42;
+  /*background-color: #E24E42;*/
 }
 
 #modal-deny:hover {
-  background-color: #CE473C;
+  /*background-color: #CE473C;*/
 }
 
 #modal-deny:focus {
-  background-color: ##B94037;
+  /*background-color: ##B94037;*/
 }
 
 #login-form {
@@ -192,7 +193,7 @@ input[type="checkbox"]:checked + label:after {
   background-color: #E24E42;
   /*border-bottom: 0.25em solid #FF5722;*/
   z-index: 100;
-  box-shadow: 0 0.05em 0.25em rgba(0,0,0,0.12), 0 0.05em 0.2em rgba(0,0,0,0.24);
+  /*box-shadow: 0 0.05em 0.25em rgba(0,0,0,0.12), 0 0.05em 0.2em rgba(0,0,0,0.24);*/
 }
 
 #header-title {
@@ -594,23 +595,6 @@ main {
   position: relative;
 }
 
-/* COLOURS STYLES FOR EXAM BLOCKS */
-.level-1 {
-  background-color: #68C4BB;
-}
-
-.level-2 {
-  background-color: #8ED081;
-}
-
-.level-3 {
-  background-color: #F4AD33;
-}
-
-.level-4 {
-  background-color: #F25F52;
-}
-
 .right-button {
   position: absolute;
   font-size: 1.2em;
@@ -669,29 +653,32 @@ main {
   font-size: 1.6em;
   width: 50%;
   height: 100%;
+}
+
+.exam-buttons-cont button, .add-exam {
   -webkit-transition: 0.15s ease-in-out background-color;
 	-moz-transition: 0.15s ease-in-out background-color;
 	-o-transition: 0.15s ease-in-out background-color;
 	transition: 0.15s ease-in-out background-color;
 }
 
-.exam-buttons-cont button:hover {
+.exam-buttons-cont button:hover, .add-exam:hover {
   cursor: pointer;
 }
 
-.level-1 button:hover {
+.level-1 button:hover, .level-1.add-exam:hover  {
   background-color: #56A19A;
 }
 
-.level-2 button:hover {
+.level-2 button:hover, .level-2.add-exam:hover  {
   background-color: #75AB6A;
 }
 
-.level-3 button:hover {
-  background-color: #C88E2A;
+.level-3 button:hover, .level-3.add-exam:hover  {
+  background-color: #C87342;
 }
 
-.level-4 button:hover {
+.level-4 button:hover, .level-4.add-exam:hover  {
   background-color: #C74E44;
 }
 
@@ -709,8 +696,14 @@ main {
 	transform: rotate(180deg);
 }
 
+#message {
+  margin: 0.5em auto;
+  max-width: 20em;
+}
+
 .message {
-  margin: 0.5em 0;
+  margin: 0.5em auto;
+  max-width: 20em;
   animation: fadein 2s;
   -moz-animation: fadeIn 1s;
   -webkit-animation: fadeIn 1s;
@@ -727,6 +720,30 @@ main {
 
 #exam-time-select {
   margin-top: 1em;
+}
+
+/* STYLES FOR PROFILE PAGE */
+.profile-block {
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 2em;
+  vertical-align: top;
+  display: inline-block;
+  margin: 1em 0;
+  box-shadow: 0 0.0025em 0.1em rgba(0,0,0,0.10), 0 0.0025em 0.1em rgba(0,0,0,0.20);
+}
+
+@media screen and (min-width: 31.250em){
+  #actions-container {
+    text-align: center;
+  }
+
+  .profile-block{
+    /*width: calc(50% - 2em);*/
+    max-width: 31.25em;
+    margin: 1em 0.25em;
+  }
 }
 
 @media screen and (min-width: 68em){
@@ -856,6 +873,70 @@ main {
     max-height: calc(100% - 11.62em);
     top: 11.62em;
   }
+}
+
+/* COLOURS STYLES FOR EXAM BLOCKS */
+.level-1 {
+  background-color: #68C4BB;
+}
+
+.level-2 {
+  background-color: #8ED081;
+}
+
+.level-3 {
+  background-color: #F48C50;
+}
+
+.level-4 {
+  background-color: #F25F52;
+}
+
+.border-green {
+  border-top: 0.25em solid #8ED081;
+  border-bottom: 0.25em solid #8ED081;
+}
+
+.border-orange {
+  border-top: 0.25em solid #F48C50;
+  border-bottom: 0.25em solid #F48C50;
+}
+
+button.red, input[type="submit"].red {
+  background-color: #E24E42;
+}
+
+button.green, input[type="submit"].green {
+  background-color: #8ED081;
+}
+
+button.red:hover, input[type="submit"].red:hover {
+  background-color: #B94037;
+}
+
+button.green:hover, input[type="submit"].green:hover {
+  background-color: #75AB6A;
+}
+
+button.orange, input[type="submit"].orange {
+  background-color: #F48C50;
+}
+
+button.orange:hover,input[type="submit"].orange:hover {
+  background-color: #C87342;
+}
+
+
+.input-group > input:focus~label.red, .input-group > input:valid~label.red, .input-group > input:disabled~label.red, .input-group > input#datepicker~label.red {
+  color: #E24E42;
+}
+
+.input-group > input:focus~label.green, .input-group > input:valid~label.green, .input-group > input:disabled~label.green, .input-group > input#datepicker~label.green {
+  color: #8ED081;
+}
+
+.input-group > input:focus~label.orange, .input-group > input:valid~label.orange, .input-group > input:disabled~label.orange, .input-group > input#datepicker~label.orange {
+  color: #F48C50;
 }
 
 @keyframes fadeIn {

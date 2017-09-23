@@ -52,6 +52,8 @@ window.addEventListener("load", function(){
 				$("#menu").style.maxHeight = null;
 			}
 		})
+
+		//
 	}
 	// Attach click listeners to the modal dialogs
 	$("#modal-exit").onclick = function(){closeModal();};
@@ -59,6 +61,12 @@ window.addEventListener("load", function(){
 
 	// Stop the dialog from closing if the user clicks within the box. This stops the click event from bubbling back up to the modal-back div
 	$("#modal-cont").onclick = function(event){event.stopPropagation();};
+
+	window.addEventListener("keyup", (event)=>{
+		if(event.which == 27 && $("#modal-cont").classList.contains("modal-show")){
+			closeModal();
+		}
+	})
 });
 
 // Function to close the menu
@@ -284,7 +292,7 @@ function populateModal(action, parameters = {}){
   // dictionary that contains all information about data to put inside a modal, based on the action input. Also a function to call on setup of the dialog
   var modals = {
 		confirm : {
-			data: "<section></section><div class='button-cont confirm-cont'><button class='button' id='modal-deny'>Cancel</button><button class='button' id='modal-confirm'>Do It!</button></div>",
+			data: "<section></section><div class='button-cont confirm-cont'><button class='button red' id='modal-deny'>Cancel</button><button class='button green' id='modal-confirm'>Do It!</button></div>",
 			function: confirmConfigure,
 		},
 		addExam : {
@@ -328,7 +336,7 @@ function populateModal(action, parameters = {}){
 			function:parameters.confFunc,
 		},
 		editExam : {
-			data : "<section><header><h1></h1></header></section>",
+			data : "<section><header><h1></h1><p id='message'></p></header></section>",
 			function:parameters.confFunc,
 		}
   };
@@ -342,15 +350,30 @@ function populateModal(action, parameters = {}){
 
 // Function to show a success tick on the modal dialog
 function modalSuccess(message){
-  $("#modal-data").innerHTML = "<i class='icon-tick modal-success'></i><p>"+message+"</p><button id='modal-success-button' class='button'>Ok</button>";
+  $("#modal-data").innerHTML = "<i class='icon-tick modal-success'></i><p>"+message+"</p><button id='modal-success-button' class='button green'>Ok</button>";
+	window.addEventListener("keydown", modalKeydown);
   $("#modal-success-button").addEventListener("click", function(){closeModal()});
+	openModal();
+	$("#modal-success-button").focus();
 }
 
 // Function to show a modal error message
 function modalFailed(message){
   $("#modal-data").html("<span class='icon-cross modal-failed'></span><p>"+message+"</p><button id='modal-success-button' class='red button'>Ok</button>");
-  $("#modal-success-button").click(closeModal);
+	window.addEventListener("keydown", modalKeydown);
+  $("#modal-success-button").addEventListener("click", function(){closeModal()});
+	openModal();
+	$("#modal-success-button").focus();
 }
+
+// Function to take a keydown event on a modal, and close it if it is enter
+function modalKeydown(event){
+	if(event.which == 13){
+		window.removeEventListener("keydown", modalKeydown);
+		closeModal();
+	}
+}
+
 // Function to close modal on a click of no
 function confirmConfigure(parameters){
   if(parameters.heading){
@@ -627,4 +650,22 @@ function manageBlocks(el = null){
 	for (let item of openItems) {
 		if(!(item == el)) item.classList.remove("buttons-open");
 	}
+}
+
+// Function to check the userexam array for any clashes
+function checkClashes(checkId, checkDate){
+	// Create an array of clashes
+	let clashes = [];
+
+	for(let exam of exams[0]){
+		if(exam.exam_id != checkId && ((new Date(exam.exam_datetime).getTime() == new Date(checkDate).getTime()) || (exam.userexam_datetime && (new Date(exam.userexam_datetime).getTime() == new Date(checkDate).getTime()))))clashes.push(exam);
+	}
+	return (clashes.length?clashes:false);
+}
+
+// Function to substitute values into a string
+function stringReplace(string, values){
+	return string.replace(/{(\d+)}/g, (matchstr, dig)=>{
+		return typeof values[dig] != 'undefined' ? values[dig] : matchstr;
+	})
 }

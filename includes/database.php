@@ -42,6 +42,7 @@ function validatePOST(){
       $errors["check_password"] = "Passwords don't match!";
     }
   }
+
   if(isset($_POST["exam_room"]) && strlen($_POST["exam_room"]) > 20){
     $errors["exam_room"] = "Please no more than 20 characters";
   }
@@ -58,6 +59,55 @@ function validatePOST(){
     }
     catch (Exception $e) {
       $errors["date-input"] = "Please don't try to mess with me. (If this isn't what you were doing, please contact an admin)";
+    }
+  }
+
+  $data = array(
+    "errors" => $errors,
+    "status" => (sizeof($errors) ? "failed" : "success")
+  );
+
+  return $data;
+}
+
+function validate($data, $fields){
+  $errors = [];
+  // Check a username field
+  if(isset($fields["username"]) && (!isset($data["username"]) || (strlen($data["username"]) > 25 || $data["username"] == ""))){
+    $errors["username"] = "Please enter a username less than 25 characters";
+  }
+
+  // Check a password field
+  if(isset($fields["password"]) && (!isset($data["password"]) || strlen($data["password"]) < 5)){
+    $errors["password"] = "Please enter a password 6 characters or more";
+  }
+
+  // If a check password has been set
+  if(isset($fields["check_password"]) && (!isset($data["check_password"]) || ($data["password"] != $data["check_password"]))){
+    $errors["check_password"] = (!isset($data["check_password"]) ? "Please enter your password again." : "Passwords don't match!");
+  }
+
+  if(isset($fields["exam_room"]) && (strlen($fields["exam_room"]) > 20)){
+    $errors["exam_room"] = "Please no more than 20 characters";
+  }
+
+  if(isset($fields["exam_name"]) && (!isset($data["exam_name"]) || (strlen($data["exam_name"]) > 45 || $data["exam_name"] == ""))){
+		$errors["exam_name"] = ($data["exam_name"] == "" || !isset($data["exam_name"])? "Please enter an exam name" : "Please enter a exam name that is shorter than 45 characters");;
+	}
+
+  // Validate a date
+  if(isset($fields["exam_date"])){
+    if(isset($data["exam_date"])){
+      // Form a new date object
+      try{
+        $date = new DateTime($_POST["exam_date"]);
+      }
+      catch (Exception $e) {
+        $errors["date-input"] = "Please don't try to mess with me. (If this isn't what you were doing, please contact an admin)";
+      }
+    }
+    else{
+      $errors["date-input"] = "Please enter a date";
     }
   }
 
