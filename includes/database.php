@@ -73,30 +73,30 @@ function validatePOST(){
 function validate($data, $fields){
   $errors = [];
   // Check a username field
-  if(isset($fields["username"]) && (!isset($data["username"]) || (strlen($data["username"]) > 25 || $data["username"] == ""))){
+  if(in_array("username", $fields) && (!isset($data["username"]) || (strlen($data["username"]) > 25 || $data["username"] == ""))){
     $errors["username"] = "Please enter a username less than 25 characters";
   }
 
   // Check a password field
-  if(isset($fields["password"]) && (!isset($data["password"]) || strlen($data["password"]) < 5)){
+  if(in_array("password", $fields) && (!isset($data["password"]) || strlen($data["password"]) < 5)){
     $errors["password"] = "Please enter a password 6 characters or more";
   }
 
   // If a check password has been set
-  if(isset($fields["check_password"]) && (!isset($data["check_password"]) || ($data["password"] != $data["check_password"]))){
+  if(in_array("check_password", $fields) && (!isset($data["check_password"]) || ($data["password"] != $data["check_password"]))){
     $errors["check_password"] = (!isset($data["check_password"]) ? "Please enter your password again." : "Passwords don't match!");
   }
 
-  if(isset($fields["exam_room"]) && (strlen($fields["exam_room"]) > 20)){
+  if(in_array("exam_room", $fields) && (strlen($fields["exam_room"]) > 20)){
     $errors["exam_room"] = "Please no more than 20 characters";
   }
 
-  if(isset($fields["exam_name"]) && (!isset($data["exam_name"]) || (strlen($data["exam_name"]) > 45 || $data["exam_name"] == ""))){
+  if(in_array("exam_name", $fields) && (!isset($data["exam_name"]) || (strlen($data["exam_name"]) > 45 || $data["exam_name"] == ""))){
 		$errors["exam_name"] = ($data["exam_name"] == "" || !isset($data["exam_name"])? "Please enter an exam name" : "Please enter a exam name that is shorter than 45 characters");;
 	}
 
   // Validate a date
-  if(isset($fields["exam_date"])){
+  if(in_array("exam_date", $fields)){
     if(isset($data["exam_date"])){
       // Form a new date object
       try{

@@ -55,7 +55,7 @@ function register(){
       // Check that the user does not already exist in the system
       if(getUser($_POST["username"])){
         $data["status"] = "failed";
-        $data["errors"]["username"] = "User exists";
+        $data["errors"]["username"] = "Username is taken";
       }
       else{
         // Hash the users password

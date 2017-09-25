@@ -1,7 +1,6 @@
 <section>
-  <header class="vert-align-cont">
+  <header>
     <h1 id="username-header"><?php echo $_SESSION["user_username"] ?></h1>
-    </div>
   </header>
 </section>
 <div id="actions-container">

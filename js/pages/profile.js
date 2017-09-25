@@ -15,6 +15,9 @@ window.addEventListener("load", ()=>{
           modalSuccess(`Successfully changed username to "${data.username}"!`);
           openModal();
         }
+        else{
+          appendFormErrors(document.forms["username-form"], data.errors);
+        }
       })
     }
   })
