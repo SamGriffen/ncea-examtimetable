@@ -7,6 +7,13 @@ require_once("../database.php");
 if(isset($_SESSION["user_id"]) && isset($_POST["username"])){
   // Validate the POST array
   $data = validate($_POST, ["username"]);
+
+  // Check that the user does not already exist
+  if(getUser($_POST["username"])){
+    $data["status"] = "failed";
+    $data["errors"]["username"] = "Username is taken";
+  }
+
   if($data["status"] == "success"){
     // If it is valid, replace the user's username
     $result = preparedStmt("UPDATE users SET user_username = ? WHERE user_id = ?", "si", [$_POST["username"], $_SESSION["user_id"]]);

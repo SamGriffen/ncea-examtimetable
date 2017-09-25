@@ -12,6 +12,7 @@
   <ul id="menu">
     <li><a href="?page=home">My Exams</a></li>
     <li><a href="?page=profile">Profile</a></li>
+    <li><a href="?page=rules">Exam Rules</a></li>
     <?php
     if($_SESSION["user_status"] == "admin"){
     ?>

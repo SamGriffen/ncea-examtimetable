@@ -20,7 +20,7 @@ body {
 }
 
 #rules h2 {
-  font-size: 1.4em;
+  font-size: 1.2em;
 }
 
 #modal-exam-list::-webkit-scrollbar {
@@ -782,16 +782,24 @@ main {
   }
 
   #menu {
+    width: auto;
+    float: right;
+    position: static;
     max-height: none;
-    width: 100%;
+    height: 3.40em;
   }
 
   #menu a {
-    width: 10em;
-    display: inline-block;
+    width: 8em;
     padding: 1em 1em;
-    float: right;
-    line-height: 1.2em;
+    font-size: 1.1em;
+    line-height: 1.1em;
+    display: inline-block;
+    margin: 0 -2px;
+  }
+
+  #menu li {
+    display: inline-block;
   }
 
   .add-button {
