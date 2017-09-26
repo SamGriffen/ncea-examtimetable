@@ -71,19 +71,19 @@ function adminEditExamConf(parameters){
   <form id='exam-form'>
     <div class="input-group">
       <input type='text' name='exam_name'>
-      <label for="exam_name">Exam Name</label>
+      <label for="exam_name" class="red">Exam Name</label>
     </div>
     <div id="date-input">
       <div class="input-group">
         <input type='date' name='exam_date' id="datepicker" value="${date.htmlDate}">
-        <label for="exam_date">Exam Date</label>
+        <label for="exam_date" class="red">Exam Date</label>
         <div id="exam-time-select">
           <input type='time' name='exam_time' id="timepicker" value="${date.htmlTime}">
         </div>
       </div>
     </div>
     <div>
-      <input type='submit' value='Save'>
+      <input type='submit' value='Save' class="red">
     </div>
   </form>
   `;
