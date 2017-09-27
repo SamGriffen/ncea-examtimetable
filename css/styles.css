@@ -174,7 +174,6 @@ input[type="checkbox"] + label, input[type="radio"] + label.circ {
 	padding: 9px;
 	display: inline-block;
 	position: relative;
-  margin: 0.25em;
   -webkit-transition: 0.15s ease-in background-color;
   -moz-transition: 0.15s ease-in background-color;
   -o-transition: 0.15s ease-in background-color;
@@ -187,6 +186,7 @@ input[type="radio"] + label.circ {
 }
 
 input[type="checkbox"]:checked + label, input[type="radio"]:checked + label.circ {
+  margin: 0.25em;
   background-color: #81C784;
 }
 
