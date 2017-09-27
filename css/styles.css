@@ -599,11 +599,11 @@ main {
   -webkit-animation-timing-function: linear;
   -moz-animation-name: fadeIn;
   -moz-animation-duration: 0.15s;
-  -moz-animation-iteration-count: 11;
+  -moz-animation-iteration-count: 1;
   -moz-animation-timing-function: linear;
   -ms-animation-name: fadeIn;
   -ms-animation-duration:0.15s;
-  -ms-animation-iteration-count: 11;
+  -ms-animation-iteration-count: 1;
   -ms-animation-timing-function: linear;
   -o-transition: rotate(3600deg);
 }
