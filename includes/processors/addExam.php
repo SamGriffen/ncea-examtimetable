@@ -12,7 +12,7 @@ if(isset($_POST["exam_id"]) && isset($_SESSION["user_id"])){
     }
 
     // Add exam to the users user_exams
-    $success = addExam($_POST["exam_id"], (isset($_POST["exam_room"])?$_POST["exam_room"]:null));
+    $success = addExam($_POST["exam_id"], (isset($_POST["exam_room"])?$_POST["exam_room"]:null), (isset($_POST["exam_date"])?$_POST["exam_date"]:null));
 
     // Get the inserted exam to send back to AJAX
     $exam = getExam(null, null, $_POST["exam_id"]);

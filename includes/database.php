@@ -227,8 +227,8 @@ function insertExam($name, $datetime, $level){
 }
 
 // Function to add a user to an exam
-function addExam($examId, $room = null){
-  return preparedStmt("INSERT INTO userexams (userexam_user, userexam_exam".($room?", userexam_room":"").") VALUES (?, ?".($room?", ?":"").")", "ii".($room?"s":""), ($room?[$_SESSION["user_id"], $examId, $room]:[$_SESSION["user_id"], $examId]));
+function addExam($examId, $room = null, $userexam_date = null){
+  return preparedStmt("INSERT INTO userexams (userexam_user, userexam_exam, userexam_room ,userexam_datetime) VALUES (?, ?, ?,?)", "iiss", [$_SESSION["user_id"], $examId, $room, $userexam_date]);
 }
 
 // Function for getting user exams

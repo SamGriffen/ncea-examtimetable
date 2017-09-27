@@ -326,10 +326,16 @@ function updateExam(event, exam){
 // Function for adding an exam.
 function addExam(event, exam){
   event.preventDefault();
+  let form = document.forms["exam-form"];
   var formData = new FormData();
   formData.append("exam_id", exam.exam_id);
 
-  var room = document.forms["exam-form"]["exam_room"].value;
+  var room = form["exam_room"].value;
+
+  // Create the date of the exam
+  let date = getExamDatetime(form);
+
+  formData.append("exam_date", date);
 
   if(room != ""){
     formData.append("exam_room", room);
